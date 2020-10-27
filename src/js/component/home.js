@@ -8,6 +8,9 @@ import rigoImage from "../../img/rigo-baby.jpg";
 export function Home() {
 	return (
 		<div className="container">
+			<header>
+				<h1>To Do List</h1>
+			</header>
 			<ToDoList />
 		</div>
 	);

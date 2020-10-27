@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 
 export const ToDoList = props => {
-	let [value, setValue] = useState(null);
-	let [tasksArray, setTasksArray] = useState([]);
+	const [value, setValue] = useState("");
+	const [tasksArray, setTasksArray] = useState([]);
+
+	const deletingTask = indexToDelete => {
+		tasksArray.splice(indexToDelete, 1);
+	};
 
 	return (
-		<div>
-			<header>
-				<h1>To Do List</h1>
-			</header>
+		<Fragment>
 			<section>
 				<form
 					onSubmit={event => {
-						setTasksArray([...tasksArray, value]);
-						setValue("");
 						event.preventDefault();
+						if (value != "") {
+							//no permite añadir tareas sin contenido
+							setTasksArray([...tasksArray, value]);
+							setValue("");
+						}
 					}}>
 					<input
 						type="text"
@@ -25,45 +29,22 @@ export const ToDoList = props => {
 					/>
 				</form>
 				<ul className="taskList">
-					{
-						(useEffect(() => {
-							tasksArray.map((task, index) => {
-								return (
-									<li key="task">
-										{task}
-										<button
-											onClick={() => {
-												tasksArray.splice(index, 1);
-												console.log(tasksArray);
-											}}>
-											X
-										</button>
-									</li>
-								);
-							});
-						}),
-						[tasksArray])
-					}
-					{/* {tasksArray.map((task, index) => {
+					{tasksArray.map((task, index) => {
 						return (
-							<li key="task">
-								{task} {console.log(tasksArray)}
-								<button
-									onClick={() => {
-										tasksArray.splice(index, 1);
-										console.log(tasksArray);
-									}}>
+							<li key={index}>
+								{task}
+								<button onClick={() => deletingTask(index)}>
 									X
 								</button>
 							</li>
 						);
-					})} */}
+					})}
 				</ul>
 			</section>
 			<footer>
 				<p>{tasksArray.length} tareas añadidas</p>
 				{/* contador tareas, que el texto sea singular si es 1, plural si son más o menos */}
 			</footer>
-		</div>
+		</Fragment>
 	);
 };
