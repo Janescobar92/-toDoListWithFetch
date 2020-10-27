@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 export const ToDoList = props => {
 	let [value, setValue] = useState(null);
 	let [tasksArray, setTasksArray] = useState([]);
-	{
-		console.log(value);
-	}
+
 	return (
 		<div>
 			<header>
@@ -15,8 +13,9 @@ export const ToDoList = props => {
 			<section>
 				<form
 					onSubmit={event => {
-						event.preventDefault();
 						setTasksArray([...tasksArray, value]);
+						setValue("");
+						event.preventDefault();
 					}}>
 					<input
 						type="text"
@@ -25,18 +24,44 @@ export const ToDoList = props => {
 						onChange={event => setValue(event.target.value)}
 					/>
 				</form>
-				{console.log(tasksArray)}
 				<ul className="taskList">
-					{/* aquí se irán añadiendo las tareas, con un map que recorre el array y va creando cada elemento de la lista con su contenido en esa posicion */}
-					{/* {tasksArray.map(task,index){
-                        return (
-                            <li>{task}</li>
-                        );
-                    }} */}
+					{
+						(useEffect(() => {
+							tasksArray.map((task, index) => {
+								return (
+									<li key="task">
+										{task}
+										<button
+											onClick={() => {
+												tasksArray.splice(index, 1);
+												console.log(tasksArray);
+											}}>
+											X
+										</button>
+									</li>
+								);
+							});
+						}),
+						[tasksArray])
+					}
+					{/* {tasksArray.map((task, index) => {
+						return (
+							<li key="task">
+								{task} {console.log(tasksArray)}
+								<button
+									onClick={() => {
+										tasksArray.splice(index, 1);
+										console.log(tasksArray);
+									}}>
+									X
+								</button>
+							</li>
+						);
+					})} */}
 				</ul>
 			</section>
 			<footer>
-				<p>n tareas añadidas</p>
+				<p>{tasksArray.length} tareas añadidas</p>
 				{/* contador tareas, que el texto sea singular si es 1, plural si son más o menos */}
 			</footer>
 		</div>
