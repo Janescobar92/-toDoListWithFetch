@@ -1,10 +1,14 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
-// .visible-or-not-button {
-//     visibility: hidden;
-//     // display: none;
-// }
-// .visible-or-not-button:hover{
-//     visibility: visible;
-//     // display: inline;
-// }
+.visible-or-not-button {
+    visibility: hidden;
+}
+.list-element:hover{
+    .visible-or-not-button{
+    visibility: visible;
+    }
+}
+body{
+    display: flex;
+    justify-content: center;
+}

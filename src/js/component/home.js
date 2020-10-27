@@ -7,7 +7,7 @@ import rigoImage from "../../img/rigo-baby.jpg";
 //create your first component
 export function Home() {
 	return (
-		<div className="container">
+		<div className="to-do-list">
 			<header>
 				<h1>To Do List</h1>
 			</header>

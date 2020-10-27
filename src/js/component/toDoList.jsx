@@ -8,6 +8,24 @@ export const ToDoList = props => {
 	const deletingTask = indexToDelete => {
 		tasksArray.splice(indexToDelete, 1);
 	};
+	const [myListElement, setMyListElement] = useState(null);
+
+	useEffect(() => {
+		setMyListElement(
+			tasksArray.map((task, index) => {
+				return (
+					<li key={index} className="list-element">
+						{task}
+						<button
+							className="visible-or-not-button"
+							onClick={() => deletingTask(index)}>
+							X
+						</button>
+					</li>
+				);
+			})
+		);
+	});
 
 	return (
 		<Fragment>
@@ -16,7 +34,7 @@ export const ToDoList = props => {
 					onSubmit={event => {
 						event.preventDefault();
 						if (value != "") {
-							//no permite añadir tareas sin contenido
+							//doesn't allow adding tasks without content
 							setTasksArray([...tasksArray, value]);
 							setValue("");
 						}
@@ -28,18 +46,7 @@ export const ToDoList = props => {
 						onChange={event => setValue(event.target.value)}
 					/>
 				</form>
-				<ul className="taskList">
-					{tasksArray.map((task, index) => {
-						return (
-							<li key={index}>
-								{task}
-								<button onClick={() => deletingTask(index)}>
-									X
-								</button>
-							</li>
-						);
-					})}
-				</ul>
+				<ul className="taskList">{myListElement}</ul>
 			</section>
 			<footer>
 				<p>{tasksArray.length} tareas añadidas</p>
