@@ -1,5 +1,91 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap');
 
+body{
+    display: flex;
+    justify-content: center;
+    // background-color: #14213D;
+    background:
+        radial-gradient(black 15%, transparent 16%) 0 0,
+        radial-gradient(black 15%, transparent 16%) 8px 8px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+        background-color:#14213D;
+    background-size:16px 16px;
+    font-family: 'Work Sans', sans-serif;
+}
+.to-do-list {
+    margin-top: 5vh;
+    padding: 3vw;
+    width: 50vw;
+    border: solid 3px rgb(0, 0, 0);
+    border-radius: 1.5vw;
+    background-color: rgba(229, 229, 229, 0.85);
+    header {
+        border-radius: 0.5rem;
+        text-align: center;
+        // border: solid blue 1px;
+        h1{
+            margin: 2vh 0;
+            font-size: 7vw;
+            color: #FCA311;
+        }
+    }
+}
+section {
+    text-align: center;
+    border-top: solid gray 1px;
+    input {
+        width: 30vw;
+        margin: 2vh 0;
+        padding: 0.5vh 1vw;
+        border: none;
+        border-bottom: solid gray 2px;
+        border-radius: 0.8vw;
+    }
+    input:focus {
+        outline: none;
+        border: none;
+        border-left: solid gray 2px;
+        border-top: solid gray 2px;
+    }
+    ul {
+        text-align: left;
+        list-style-type: none;
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 1vh 2vw 0.2vh 2vw;
+            margin-right: 3vw;
+            margin-bottom: 1vh;
+            background: #FFFFFF;
+            border-radius: 0.8vw;
+            button {
+                box-shadow:inset 0px 0px 0px 0px #ffffff;
+                background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+                background-color:#f9f9f9;
+                border-radius:30px;
+                border:2px solid #14213D;
+                display:inline-block;
+                cursor:pointer;
+                color:#14213D;
+                font-size:12px;
+                padding:3px 8px;
+                margin-bottom: 2.5px;
+                text-decoration:none;
+                text-shadow:0px 1px 0px #ffffff;
+            }
+            button:hover {
+                background:linear-gradient(to bottom, #FCA311 5%, #FFF 100%);
+                background-color:#FCA311;
+            }
+            button:active {
+                position:relative;
+                top:1px;
+            }
+        }
+    }
+}
 .visible-or-not-button {
     visibility: hidden;
 }
@@ -8,7 +94,12 @@
     visibility: visible;
     }
 }
-body{
-    display: flex;
-    justify-content: center;
+footer{
+    border-top: solid  gray 1px;
+    border-bottom: solid gray 1px;
+    p {
+        margin-top: 2vh;
+        text-align: center;
+    }
 }
+
