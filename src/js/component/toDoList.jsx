@@ -3,19 +3,36 @@ import PropTypes from "prop-types";
 
 export const ToDoList = props => {
 	const [value, setValue] = useState("");
-	// const [tasksArray, setTasksArray] = useState([]);
 	const [tasksApiArray, setTasksApiArray] = useState([]);
+	const [myListElement, setMyListElement] = useState(null);
+	const [crossClass, setCrossClass] = useState("list-element");
 
 	const isTaskDone = indexToCrossOut => {
 		if (tasksApiArray[indexToCrossOut].done == false) {
 			tasksApiArray[indexToCrossOut].done = true;
-			console.log(tasksApiArray[indexToCrossOut].done);
+			setCrossClass("list-element text-danger");
 		} else {
 			tasksApiArray[indexToCrossOut].done = false;
-			console.log(tasksApiArray[indexToCrossOut].done);
+			setCrossClass("list-element");
 		}
+		// if (tasksApiArray[indexToCrossOut].done == true) {
+		// 	crossClass = " crossedText";
+		// 	console.log(crossClass);
+		// } else {
+		// 	crossClass = "";
+		// }
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jan", {
+			method: "PUT",
+			body: JSON.stringify(tasksApiArray),
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+			.then(response => response.json())
+			.then(answerUpload => {
+				console.log("Success: ", JSON.stringify(answerUpload));
+			});
 	};
-	const [myListElement, setMyListElement] = useState(null);
 
 	useEffect(() => {
 		fetch("https://assets.breatheco.de/apis/fake/todos/user/jan", {
@@ -28,7 +45,6 @@ export const ToDoList = props => {
 				return response.json();
 			})
 			.then(responseAsJson => {
-				console.log(responseAsJson);
 				// responseAsJson.map((task, index) => {
 				// 	setTasksApiArray(task => [...tasksApiArray, task]);
 				// });
@@ -59,10 +75,10 @@ export const ToDoList = props => {
 			setMyListElement(
 				tasksApiArray.map((task, index) => {
 					return (
-						<li key={index} className="list-element">
+						<li key={index} className={crossClass}>
 							{task.label}
-
 							<button
+								id="crossOutButton"
 								className="visible-or-not-button"
 								onClick={() => {
 									isTaskDone(index);
@@ -77,27 +93,6 @@ export const ToDoList = props => {
 		},
 		[tasksApiArray]
 	);
-
-	// useEffect(() => {
-	// 	setMyListElement(
-	// 		tasksApiArray.map((task, index) => {
-	// 			return (
-	// 				<li key={index} className="list-element">
-	// 					{task.label}
-
-	// 					<button
-	// 						className="visible-or-not-button"
-	// 						onClick={() => {
-	// 							isTaskDone(index);
-	// 							console.log(tasksApiArray);
-	// 						}}>
-	// 						X
-	// 					</button>
-	// 				</li>
-	// 			);
-	// 		})
-	// 	);
-	// });
 
 	return (
 		<Fragment>
