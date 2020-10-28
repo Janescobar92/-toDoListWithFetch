@@ -3,29 +3,101 @@ import PropTypes from "prop-types";
 
 export const ToDoList = props => {
 	const [value, setValue] = useState("");
-	const [tasksArray, setTasksArray] = useState([]);
+	// const [tasksArray, setTasksArray] = useState([]);
+	const [tasksApiArray, setTasksApiArray] = useState([]);
 
-	const deletingTask = indexToDelete => {
-		tasksArray.splice(indexToDelete, 1);
+	const isTaskDone = indexToCrossOut => {
+		if (tasksApiArray[indexToCrossOut].done == false) {
+			tasksApiArray[indexToCrossOut].done = true;
+			console.log(tasksApiArray[indexToCrossOut].done);
+		} else {
+			tasksApiArray[indexToCrossOut].done = false;
+			console.log(tasksApiArray[indexToCrossOut].done);
+		}
 	};
 	const [myListElement, setMyListElement] = useState(null);
 
 	useEffect(() => {
-		setMyListElement(
-			tasksArray.map((task, index) => {
-				return (
-					<li key={index} className="list-element">
-						{task}
-						<button
-							className="visible-or-not-button"
-							onClick={() => deletingTask(index)}>
-							X
-						</button>
-					</li>
-				);
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jan", {
+			method: "GET"
+		})
+			.then(response => {
+				if (!response.ok) {
+					throw Error(response.status);
+				}
+				return response.json();
 			})
-		);
-	});
+			.then(responseAsJson => {
+				console.log(responseAsJson);
+				// responseAsJson.map((task, index) => {
+				// 	setTasksApiArray(task => [...tasksApiArray, task]);
+				// });
+				setTasksApiArray(responseAsJson);
+			})
+			.catch(error => {
+				console.log("Error status: ", error);
+			});
+	}, []);
+
+	useEffect(
+		() => {
+			fetch("https://assets.breatheco.de/apis/fake/todos/user/jan", {
+				method: "PUT",
+				body: JSON.stringify(tasksApiArray),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+				.then(response => response.json())
+				.then(answerUpload => {
+					console.log("Success: ", JSON.stringify(answerUpload));
+				})
+				.catch(error => {
+					console.log("Error status: ", error);
+				});
+
+			setMyListElement(
+				tasksApiArray.map((task, index) => {
+					return (
+						<li key={index} className="list-element">
+							{task.label}
+
+							<button
+								className="visible-or-not-button"
+								onClick={() => {
+									isTaskDone(index);
+									console.log(tasksApiArray);
+								}}>
+								X
+							</button>
+						</li>
+					);
+				})
+			);
+		},
+		[tasksApiArray]
+	);
+
+	// useEffect(() => {
+	// 	setMyListElement(
+	// 		tasksApiArray.map((task, index) => {
+	// 			return (
+	// 				<li key={index} className="list-element">
+	// 					{task.label}
+
+	// 					<button
+	// 						className="visible-or-not-button"
+	// 						onClick={() => {
+	// 							isTaskDone(index);
+	// 							console.log(tasksApiArray);
+	// 						}}>
+	// 						X
+	// 					</button>
+	// 				</li>
+	// 			);
+	// 		})
+	// 	);
+	// });
 
 	return (
 		<Fragment>
@@ -35,7 +107,10 @@ export const ToDoList = props => {
 						event.preventDefault();
 						if (value != "") {
 							//doesn't allow adding tasks without content
-							setTasksArray([...tasksArray, value]);
+							setTasksApiArray([
+								...tasksApiArray,
+								{ label: value, done: false }
+							]);
 							setValue("");
 						}
 					}}>
@@ -49,8 +124,7 @@ export const ToDoList = props => {
 				<ul className="taskList">{myListElement}</ul>
 			</section>
 			<footer>
-				<p>{tasksArray.length} tareas añadidas</p>
-				{/* contador tareas, que el texto sea singular si es 1, plural si son más o menos */}
+				<p>{tasksApiArray.length} tareas añadidas</p>
 			</footer>
 		</Fragment>
 	);
