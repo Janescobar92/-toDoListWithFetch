@@ -78,9 +78,8 @@ export const ToDoList = props => {
 								className="visible-or-not-button"
 								onClick={() => {
 									isTaskDone(index);
-									console.log(tasksApiArray);
 								}}>
-								X
+								<i className="fas fa-check-square" />
 							</button>
 						</li>
 					);
@@ -113,10 +112,10 @@ export const ToDoList = props => {
 					/>
 				</form>
 				<ul className="taskList">{myListElement}</ul>
+				<footer>
+					<p>{tasksApiArray.length} Task counter</p>
+				</footer>
 			</section>
-			<footer>
-				<p>{tasksApiArray.length} tareas añadidas</p>
-			</footer>
 		</Fragment>
 	);
 };

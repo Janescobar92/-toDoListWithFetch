@@ -9,7 +9,10 @@ export function Home() {
 	return (
 		<div className="to-do-list">
 			<header>
-				<h1>To Do List</h1>
+				<h1 className="d-flex justify-content-center">
+					To do {""}
+					<span className="list-word">List</span>
+				</h1>
 			</header>
 			<ToDoList />
 		</div>
